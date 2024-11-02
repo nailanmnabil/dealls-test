@@ -1,0 +1,487 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Dealls API Doc",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/login": {
+            "post": {
+                "description": "Log in a user with their email and password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "User login",
+                "parameters": [
+                    {
+                        "description": "User login request",
+                        "name": "loginReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful login response with access token",
+                        "schema": {
+                            "$ref": "#/definitions/dto.RegisterRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation failed",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized, invalid credentials",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/packages": {
+            "get": {
+                "description": "Retrieve a list of all available premium packages",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Package"
+                ],
+                "summary": "Get all premium packages",
+                "responses": {
+                    "200": {
+                        "description": "Successful response with list of premium packages",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/entities.PremiumPackage"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/packages/purchase": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Allows a user to purchase a specified premium package",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Package"
+                ],
+                "summary": "Purchase a premium package",
+                "parameters": [
+                    {
+                        "description": "Purchase package request",
+                        "name": "purchaseReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PurchasePackageReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful response with purchase details",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Purchase"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation failed",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Package not found",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/profiles/random": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve a random user profile that has not been swiped by the current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get a random user profile",
+                "responses": {
+                    "200": {
+                        "description": "Successful response with random profile",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Profile"
+                        }
+                    },
+                    "404": {
+                        "description": "No profile found",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/profiles/swipe": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Allows a user to swipe left or right on a specified profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Swipe on a user profile",
+                "parameters": [
+                    {
+                        "description": "Swipe request",
+                        "name": "swipeReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SwipeReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Swipe recorded successfully",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation failed",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Profile not found",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "description": "Register a new user with the provided information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Register a new user",
+                "parameters": [
+                    {
+                        "description": "User registration request",
+                        "name": "registerReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "schema": {
+                            "$ref": "#/definitions/dto.RegisterRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation failed",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.LoginReq": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 16,
+                    "minLength": 8
+                }
+            }
+        },
+        "dto.PurchasePackageReq": {
+            "type": "object",
+            "required": [
+                "package_id"
+            ],
+            "properties": {
+                "package_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RegisterReq": {
+            "type": "object",
+            "required": [
+                "age",
+                "bio",
+                "email",
+                "location",
+                "name",
+                "password",
+                "profile_pic_url"
+            ],
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "bio": {
+                    "type": "string",
+                    "minLength": 15
+                },
+                "email": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 16,
+                    "minLength": 8
+                },
+                "profile_pic_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RegisterRes": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SwipeReq": {
+            "type": "object",
+            "required": [
+                "profile_visit_id",
+                "swipe_type"
+            ],
+            "properties": {
+                "profile_visit_id": {
+                    "type": "string"
+                },
+                "swipe_type": {
+                    "type": "string",
+                    "enum": [
+                        "LEFT",
+                        "RIGHT"
+                    ]
+                }
+            }
+        },
+        "entities.PremiumPackage": {
+            "type": "object",
+            "properties": {
+                "active_period": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "feature_type": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "package_name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "entities.Profile": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "bio": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "profile_pic_url": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.Purchase": {
+            "type": "object",
+            "properties": {
+                "expired_date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "package_id": {
+                    "type": "string"
+                },
+                "premium_package": {
+                    "$ref": "#/definitions/entities.PremiumPackage"
+                },
+                "purchase_date": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "error": {},
+                "status": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "This is a documentation of Dealls backend service.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
