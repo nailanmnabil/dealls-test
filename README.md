@@ -75,3 +75,5 @@ Encapsulates core business logic, processing data and enforcing business rules b
    This command executes integration tests with `k6`, allowing you to verify that the service behaves as expected under load.
 
 By following these steps, you will successfully set up and run the backend service, ensuring your database is correctly configured and tested.
+
+### [PDF Doc](https://drive.google.com/file/d/1jfJJotc-ilG3SyCXAZgF2QBBsd_Sov3o/view)
